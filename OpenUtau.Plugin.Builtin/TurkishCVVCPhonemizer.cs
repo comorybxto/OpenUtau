@@ -17,15 +17,15 @@ namespace OpenUtau.Plugin.Builtin {
         //static readonly string[] standaloneConsonants = new string[] { "ch", "f", "j", "r", "rr", "sh", "s", "t", "v", "y", "z", "k", "l", "m", "n", "p", "ky", "py", "ty" };
 
         static readonly string[] vowels = new string[] {
+            "ae=ae,bae,cae,chae,dae,fae,gae,hae,jae,kae,lae,lyae,mae,nae,pae,rae,rrae,r'ae,sae,shae,tae,vae,wae,yae,zae,9ae,qae,? ae,brae,drae,grae,glae,hrae,krae,klae,ksae,prae,plae,psae,trae,frae,flae,slae,skae,spae,stae,vlae",
             "a=a,ba,ca,cha,da,fa,ga,gya,ha,ja,ka,kya,la,lya,ma,na,pa,ra,rra,r'a,sa,sha,ta,va,wa,ya,za,9a,qa,? a,bra,dra,gra,gla,hra,kra,kla,ksa,pra,pla,psa,tra,fra,fla,sla,ska,spa,sta,vla",
+            "oe=oe,boe,coe,choe,doe,foe,goe,hoe,joe,koe,loe,lyoe,moe,noe,poe,roe,rroe,r'oe,soe,shoe,toe,voe,woe,yoe,zoe,9oe,qoe,? oe,broe,droe,groe,gloe,hroe,kroe,kloe,ksoe,proe,ploe,psoe,troe,froe,floe,sloe,skoe,spoe,stoe,vloe",
+            "eu=eu,beu,ceu,cheu,deu,feu,geu,heu,jeu,keu,leu,lyeu,meu,neu,peu,reu,rreu,r'eu,seu,sheu,teu,veu,weu,yeu,zeu,9eu,qeu,? eu,breu,dreu,greu,gleu,hreu,kreu,kleu,kseu,preu,pleu,pseu,treu,freu,fleu,sleu,skeu,speu,steu,vleu",
+            "ue=ue,bue,cue,chue,due,fue,gue,hue,jue,kue,lue,lyue,mue,nue,pue,rue,rrue,r'ue,sue,shue,tue,vue,wue,yue,zue,9ue,que,? ue,brue,drue,grue,glue,hrue,krue,klue,ksue,prue,plue,psue,true,frue,flue,slue,skue,spue,stue,vlue",
             "e=e,be,ce,che,de,fe,ge,he,je,ke,le,lye,me,ne,pe,re,rre,r'e,se,she,te,ve,we,ye,ze,9e,qe,? e,bre,dre,gre,gle,hre,kre,kle,kse,pre,ple,pse,tre,fre,fle,sle,ske,spe,ste,vle",
             "o=o,bo,co,cho,do,fo,go,ho,jo,ko,lo,lyo,mo,no,po,ro,rro,r'o,so,sho,to,vo,wo,yo,zo,9o,qo,? o,bro,dro,gro,glo,hro,kro,klo,kso,pro,plo,pso,tro,fro,flo,slo,sko,spo,sto,vlo",
             "u=u,bu,cu,chu,du,fu,gu,hu,ju,ku,lu,lyu,mu,nu,pu,ru,rru,r'u,su,shu,tu,vu,wu,yu,zu,9u,qu,? u,bru,dru,gru,glu,hru,kru,klu,ksu,pru,plu,psu,tru,fru,flu,slu,sku,spu,stu,vlu",
             "i=i,bi,ci,chi,di,fi,gi,gyi,hi,ji,ki,li,lyi,mi,ni,pi,ri,rri,r'i,si,shi,ti,vi,wi,yi,zi,9i,qi,? i,bri,dri,gri,gli,hri,kri,kli,ksi,pri,pli,psi,tri,fri,fli,sli,ski,spi,sti,vli",
-            "ae=ae,bae,cae,chae,dae,fae,gae,hae,jae,kae,lae,lyae,mae,nae,pae,rae,rrae,r'ae,sae,shae,tae,vae,wae,yae,zae,9ae,qae,? ae,brae,drae,grae,glae,hrae,krae,klae,ksae,prae,plae,psae,trae,frae,flae,slae,skae,spae,stae,vlae",
-            "eu=eu,beu,ceu,cheu,deu,feu,geu,heu,jeu,keu,leu,lyeu,meu,neu,peu,reu,rreu,r'eu,seu,sheu,teu,veu,weu,yeu,zeu,9eu,qeu,? eu,breu,dreu,greu,gleu,hreu,kreu,kleu,kseu,preu,pleu,pseu,treu,freu,fleu,sleu,skeu,speu,steu,vleu",
-            "oe=oe,boe,coe,choe,doe,foe,goe,hoe,joe,koe,loe,lyoe,moe,noe,poe,roe,rroe,r'oe,soe,shoe,toe,voe,woe,yoe,zoe,9oe,qoe,? oe,broe,droe,groe,gloe,hroe,kroe,kloe,ksoe,proe,ploe,psoe,troe,froe,floe,sloe,skoe,spoe,stoe,vloe",
-            "ue=ue,bue,cue,chue,due,fue,gue,hue,jue,kue,lue,lyue,mue,nue,pue,rue,rrue,r'ue,sue,shue,tue,vue,wue,yue,zue,9ue,que,? ue,brue,drue,grue,glue,hrue,krue,klue,ksue,prue,plue,psue,true,frue,flue,slue,skue,spue,stue,vlue",
             "N=N","M=M","NG=NG","L=L","LY=LY"
         };
 
@@ -165,6 +165,21 @@ namespace OpenUtau.Plugin.Builtin {
             return false;
         }
 
+        private bool vowelSearch(string lyric, out string vow) {
+            if (lyric.Length >= 2) {
+                if (vowelLookup.TryGetValue(lyric.Substring(lyric.Length - 2, 2) ?? string.Empty, out var vow2)) {
+                    vow = vow2;
+                    return true;
+                }
+            }
+            if (vowelLookup.TryGetValue(lyric.LastOrDefault().ToString() ?? string.Empty, out var vow1)) {
+                vow = vow1;
+                return true;
+            }
+
+            vow = "";
+            return false;
+        }
 
         // can probably be cleaned up more but i have work in the morning. have fun.
         public override Result Process(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevNeighbours) {
@@ -175,8 +190,6 @@ namespace OpenUtau.Plugin.Builtin {
             }
             var originalCurrentLyric = currentLyric;
             var cfLyric = $"* {currentLyric}";
-            var attr0 = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == 0) ?? default;
-            var attr1 = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == 1) ?? default;
 
             if (!string.IsNullOrEmpty(note.phoneticHint)) {
                 string[] tests = new string[] { currentLyric };
@@ -198,7 +211,7 @@ namespace OpenUtau.Plugin.Builtin {
                     prevLyric = prevNeighbour.Value.phoneticHint.Normalize();
                 }
                 // Current note is VV
-                if (vowelLookup.TryGetValue(prevLyric.LastOrDefault().ToString() ?? string.Empty, out var vow)) {
+                if (vowelSearch(prevLyric, out var vow)) {
                     var vowLyric = $"{vow} {currentLyric}";
                     // try vowlyric before cflyric, if both fail try currentlyric
                     string[] tests = new string[] { vowLyric, cfLyric, currentLyric };
@@ -212,30 +225,34 @@ namespace OpenUtau.Plugin.Builtin {
                     currentLyric = oto.Alias;
                 }
             }
-            
-            var tempLyric = currentLyric;
 
+            //var tempLyric = currentLyric;
+
+            // C- ile alakalı
+            // rk -
+            // a k-
             if (nextNeighbour == null && consonantLookup.ContainsValue(originalCurrentLyric.Substring(0, Math.Min(3, originalCurrentLyric.Length)))) {
                 var vowel = "";
                 var consonant = "";
                 var prevLyric = prevNeighbour.Value.lyric.Normalize();
 
-                if (nonVowels.Contains(currentLyric)) {
+                if (nonVowels.Contains(originalCurrentLyric)) {
                     if (consonantLookup.TryGetValue(prevLyric.LastOrDefault().ToString().ToLower() ?? string.Empty, out var con)) {
                         consonant = con;
-                        var conLyric = $"{consonant} {currentLyric}";
+                        var conLyric = $"{consonant}{currentLyric} -";
                         string[] tests = new string[] { conLyric, currentLyric };
                         if (checkOtoUntilHit(tests, note, out var oto)) {
-                            currentLyric = $"{consonant}{originalCurrentLyric} -{oto.Suffix}";
+                            //currentLyric = $"{consonant}{originalCurrentLyric} -{oto.Suffix}";
+                            currentLyric = oto.Alias;
                         }
-                    }
-                } else {
-                    if (vowelLookup.TryGetValue(prevLyric.LastOrDefault().ToString() ?? string.Empty, out var vow)) {
-                        vowel = vow;
-                        var vowLyric = $"{vowel} {currentLyric}";
-                        string[] tests = new string[] { vowLyric, currentLyric };
-                        if (checkOtoUntilHit(tests, note, out var oto)) {
-                            currentLyric = $"{vowel} {originalCurrentLyric}-{oto.Suffix}";
+                    } else {
+                        if (vowelSearch(prevLyric, out var vow)) {
+                            vowel = vow;
+                            var vowLyric = $"{vowel} {originalCurrentLyric}-";
+                            string[] tests = new string[] { vowLyric, currentLyric };
+                            if (checkOtoUntilHit(tests, note, out var oto)) {
+                                currentLyric = oto.Alias;
+                            }
                         }
                     }
                 }
@@ -249,17 +266,20 @@ namespace OpenUtau.Plugin.Builtin {
                 };
             }
 
+            //CC ile alakalı 
+            /*
             if (nextNeighbour != null && string.IsNullOrEmpty(nextNeighbour.Value.phoneticHint)) {
                 var nextLyric = nextNeighbour.Value.lyric.Normalize();
-                var prevLyric = prevNeighbour.Value.lyric.Normalize();
+                var prevLyric = "";
+                if (prevNeighbour != null)
+                    prevLyric = prevNeighbour.Value.lyric.Normalize();//........................
                 var vowel = "";
                 var consonant = "";
-
-                if (consonantLookup.ContainsKey(originalCurrentLyric.Substring(0, originalCurrentLyric.Length))) { // key: ka | value: k
+                if (consonantLookup.ContainsKey(originalCurrentLyric)) { // key: ka | value: k
 
                     //DOESN'T WORK AS INTENDED
                     //case where nextLyric == C (this one works :thumbsup:)
-                    if (nonVowels.Contains(currentLyric)) {
+                    if (nonVowels.Contains(originalCurrentLyric)) {
                         if (consonantLookup.TryGetValue(prevLyric.LastOrDefault().ToString().ToLower() ?? string.Empty, out var con)) {
                             consonant = con;
                             var conLyric = $"{consonant} {currentLyric}";
@@ -276,7 +296,7 @@ namespace OpenUtau.Plugin.Builtin {
                                 },
                             };
                         }
-                    } else if (consonantLookup.ContainsValue(currentLyric)) { //PROBLEM BLOCK!!!!!!!!!!!!!!!!!!!!!!!!!! H8
+                    } else if (consonantLookup.ContainsValue(originalCurrentLyric)) { //PROBLEM BLOCK!!!!!!!!!!!!!!!!!!!!!!!!!! H8
                         if (consonantLookup.TryGetValue(prevLyric.LastOrDefault().ToString().ToLower() ?? string.Empty, out var con)) {
                             consonant = con;
                             var conLyric = $"{consonant} {currentLyric}";
@@ -295,16 +315,18 @@ namespace OpenUtau.Plugin.Builtin {
                         }
                     }
                 }
-            } //boka sardı geri al. aşağıdakilerin çalışmasını engelliyor
+            } */
 
-            currentLyric = tempLyric;
+
+            //currentLyric = tempLyric;
 
             if (nextNeighbour != null && string.IsNullOrEmpty(nextNeighbour.Value.phoneticHint)) {
                 var nextLyric = nextNeighbour.Value.lyric.Normalize();
 
 
                 // Check if next note is a vowel and does not require VC
-                if (nextLyric.Length == 1 && plainVowels.Contains(nextLyric)) {
+                //if (plainVowels.Contains(nextLyric) && nextLyric.Length == 1) { //burda niye vowel uzunluğunu 1e sınırlamış ki çok saçma
+                if (plainVowels.Contains(nextLyric)) {
                     return new Result {
                         phonemes = new Phoneme[] {
                             new Phoneme() {
@@ -315,10 +337,10 @@ namespace OpenUtau.Plugin.Builtin {
                 }
 
 
-                // Insert VC before next neighbor
+                // Insert VC before next neighbor ********************************************************
                 // Get vowel from current note
                 var vowel = "";
-                if (vowelLookup.TryGetValue(originalCurrentLyric.LastOrDefault().ToString() ?? string.Empty, out var vow)) {
+                if (vowelSearch(originalCurrentLyric, out var vow)) {
                     vowel = vow;
                 }
 
@@ -326,7 +348,8 @@ namespace OpenUtau.Plugin.Builtin {
                 if (nextLyric.Length >= 3 && consonantLookup.TryGetValue(nextLyric.Substring(0, 3), out var con)) {
                     consonant = con; // Handle cases like "kya" and "lya"
                 } else if (nextLyric.Length >= 2 && consonantLookup.TryGetValue(nextLyric.Substring(0, 2), out con)) {
-                    consonant = con; // Handle cases like "ka" and "la"
+                    if (con.Length != 2) // except consonants with length 2
+                        consonant = con; // Handle cases like "ka" and "la"
                 }
 
                 if (consonant == "") {
@@ -386,7 +409,7 @@ namespace OpenUtau.Plugin.Builtin {
                 };
             }
 
-            // No next neighbor
+            // No next neighbor ********************************************************
             return new Result {
                 phonemes = new Phoneme[] {
                     new Phoneme {
